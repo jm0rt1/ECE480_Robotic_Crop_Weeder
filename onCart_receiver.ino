@@ -59,26 +59,24 @@ void loop() {
     //Read the incoming byte
     incomingByte = Serial.read();
     //Start the message when the '<' symbol is received
-    if(incomingByte == '<')
-    {
-     started = true;
-     ended = false;
-     index = 0;
-     driveIndex = 0;
-     drive_[driveIndex] = '\0'; // throw away any incomplete packet
-     steerIndex = 0;
-     steer[steerIndex] = '\0';
-     msg[index] = '\0'; // Throw away any incomplete packet
-   }
+    if(incomingByte == '<') {
+      started = true;
+      ended = false;
+      index = 0;
+      driveIndex = 0;
+      drive_[driveIndex] = '\0'; // throw away any incomplete packet
+      steerIndex = 0;
+      steer[steerIndex] = '\0';
+      msg[index] = '\0'; // Throw away any incomplete packet
+    }
    //End the message when the '>' symbol is received
-   else if(incomingByte == '>')
-   {
-     ended = true;
-     break; // Done reading - exit from while loop!
-   }
+    else if(incomingByte == '>') {
+      ended = true;
+      break; // Done reading - exit from while loop!
+    }
    
-   //Read the message!
-    else{
+    //Read the message!
+    else {
       if(index < 40) { // Make sure there is room
         msg[index] = incomingByte; // Add char to array
         index++;
@@ -86,24 +84,20 @@ void loop() {
       }
     }
   }
-  
- if(started && ended)
- {
+
+ if(started && ended) {
    //int value = atoi(msg);
    //analogWrite(ledPin, value);
    char current;
    int actualDriveVal = 0;
-   for (byte i = 0; i < index; i++)
-   {
+   for (byte i = 0; i < index; i++) {
       // get current character
       current = msg[i];
       // check if it is for drive
-      if (current == 'D')
-      {
+      if (current == 'D') {
         i++;
         current = msg[i]; // get next character
-        while(current != ' ')
-        {
+        while(current != ' ') {
           // fill drive buffer
           drive_[driveIndex] = current; //read in the number
           driveIndex++; //next index
@@ -142,9 +136,7 @@ void loop() {
           current = msg[i];
         }
       }
-      
-      
-   }
+    }
    //Serial.println(); //Only for debugging
    int driveValue = atoi(drive_); // convert drive buffer to usable value
 
