@@ -51,7 +51,14 @@ void loop() {
   leftStick = leftStick / speedLevel; // Reduce top speed
 
   if (digitalRead(STICK_CLICK) == 0) {
-    
+    if (control_mode == 0) {
+      control_mode = 1;
+      digitalWrite(LED_PIN, HIGH);
+    } else {
+      control_mode = 0;
+      digitalWrite(LED_PIN, LOW);
+    }
+    delay(500);
   }
   
   // build button message buffer
