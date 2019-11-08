@@ -34,7 +34,7 @@ void setup() {
   pinMode(L_TRIG,INPUT_PULLUP); // Enable pullup resistor for left trigger
   pinMode(R_TRIG,INPUT_PULLUP); // Enable pullup resistor for right trigger
   pinMode(LED_PIN,OUTPUT); //Enable output pin for LED
-  pinMode(STICK_CLICK, INPUT_PULLUP); //enable pullup resistor for 
+  pinMode(STICK_CLICK, INPUT_PULLUP); //enable pullup resistor for anolog stick click
 }
 
 void loop() {
