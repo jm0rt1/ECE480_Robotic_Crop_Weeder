@@ -20,12 +20,13 @@
 
 int8_t speedLevel = 6; // used to decrease the maximum motor speed by a constant factor
 int delayTrans = 25; // milliseconds of delay for transmission
+int control_mode = 0; // by default control mode == 0
 
 void setup() {
-  Serial1.begin(9600); // Start serial communication with XBee at 9600 baud
+  Serial.begin(9600); // Start serial communication with XBee at 9600 baud
   delay(10);
 
-  Serial1.print("W7001\r\n"); // Set the bit in enable register 0x70 to 0x01
+  Serial.print("W7001\r\n"); // Set the bit in enable register 0x70 to 0x01
 
   pinMode(TOP_BUTTON,INPUT_PULLUP); // Enable pullup resistor for left trigger
   pinMode(R_BUTTON,INPUT_PULLUP);
@@ -42,8 +43,6 @@ void loop() {
   char buf0[10],buf1[10],bufTop[10]; // character buffers used to set motor speeds
   int tempVal = 1;
 
-  
-  int control_mode = 0; // by default control mode is zero
   // Read joysticks
   leftStick = analogRead(L_JOYSTICK);
   leftStick = map (leftStick, 0, 1023, -128, 127);
@@ -59,6 +58,7 @@ void loop() {
       digitalWrite(LED_PIN, LOW);
     }
     delay(500);
+    return; //go back to the top of the loop, dont send any messages if control mode was changed
   }
   
   // build button message buffer
@@ -88,6 +88,7 @@ void loop() {
         sprintf(bufTop," C0 >");
         delay(2);
       }
+      break;
     case 1:
       if(digitalRead(TOP_BUTTON) == 0) {//new message
         sprintf(bufTop," C2 >",tempVal);
@@ -108,9 +109,10 @@ void loop() {
         sprintf(bufTop," C5 >");
         delay(2);
       } else {
-        sprintf(bufTop," C0 >"); 
+        sprintf(bufTop," C0 >");
         delay(2);
       }
+      break;
   }
 
   // Build motor buffer
@@ -126,10 +128,10 @@ void loop() {
 
   // Send motor speeds
   delay(delayTrans);
-  Serial1.print(buf0);
+  Serial.print(buf0);
   delay(delayTrans);
-  Serial1.print(buf1);
+  Serial.print(buf1);
   delay(delayTrans);
-  Serial1.print(bufTop);
+  Serial.print(bufTop);
 
 }
