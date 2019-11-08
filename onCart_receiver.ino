@@ -78,16 +78,15 @@ void loop() {
    }
    
    //Read the message!
-   else
-   {
-     if(index < 40) // Make sure there is room
-     {
-       msg[index] = incomingByte; // Add char to array
-       index++;
-       msg[index] = '\0'; // Add NULL to end //gets overwritten in each each iteration.
-   }
- }
- 
+    else{
+      if(index < 40) { // Make sure there is room
+        msg[index] = incomingByte; // Add char to array
+        index++;
+        msg[index] = '\0'; // Add NULL to end //gets overwritten in each each iteration.
+      }
+    }
+  }
+  
  if(started && ended)
  {
    //int value = atoi(msg);
