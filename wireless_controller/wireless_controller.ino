@@ -23,6 +23,7 @@ int delayTrans = 25; // milliseconds of delay for transmission
 int control_mode = 0; // by default control mode == 0
 
 void setup() {
+  SerialUSB.begin(9600);
   Serial.begin(9600); // Start serial communication with XBee at 9600 baud
   delay(10);
 
@@ -48,7 +49,7 @@ void loop() {
   leftStick = map (leftStick, 0, 1023, -128, 127);
   rightStick = analogRead(R_JOYSTICK);
   leftStick = leftStick / speedLevel; // Reduce top speed
-
+  SerialUSB.write("pre-switch\n");
   if (digitalRead(STICK_CLICK) == 0) {
     if (control_mode == 0) {
       control_mode = 1;
@@ -57,15 +58,15 @@ void loop() {
       control_mode = 0;
       digitalWrite(LED_PIN, LOW);
     }
-    delay(500);
-    return; //go back to the top of the loop, dont send any messages if control mode was changed
+    delay(500); //go back to the top of the loop, dont send any messages if control mode was changed
   }
+    SerialUSB.write("post-switch\n");
   
   // build button message buffer
   //added a switch statement that will alter the messages sent to the controller
   //based on what control mode we are in. Currently it sends the same messages either way.
-  switch (control_mode) {
-    case 0:
+  if (control_mode == 0) {
+      SerialUSB.write("0\n");
       if(digitalRead(TOP_BUTTON) == 0) {// Camera Rotation outwards (up)
         sprintf(bufTop," C1 >",tempVal);
         delay(2);
@@ -88,8 +89,8 @@ void loop() {
         sprintf(bufTop," C0 >");
         delay(2);
       }
-      break;
-    case 1:
+  } else if(control_mode == 1) {
+    SerialUSB.write("1\n");
       if(digitalRead(TOP_BUTTON) == 0) {//new message
         sprintf(bufTop," C2 >",tempVal);
         delay(2);
@@ -112,18 +113,19 @@ void loop() {
         sprintf(bufTop," C0 >");
         delay(2);
       }
-      break;
   }
-
+  SerialUSB.write("pre-send\n");
   // Build motor buffer
   sprintf(buf0,"<D%d ",leftStick); //start of the message
   
   // Build steer buffer
   if(rightStick > 0) {
+    SerialUSB.write("drive\n");
     sprintf(buf1,"S%d ",rightStick);
   }
   else {
     sprintf(buf1,"S%d ",abs(rightStick));
+    SerialUSB.write("drive-else\n");
   }
 
   // Send motor speeds
