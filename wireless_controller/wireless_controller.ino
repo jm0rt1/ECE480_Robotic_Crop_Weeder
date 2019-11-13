@@ -104,10 +104,10 @@ void loop() {
         sprintf(bufTop," C3 >");
         delay(2);
       } else if(digitalRead(L_TRIG) == 0) { //new message
-        sprintf(bufTop," C6 >");
+        sprintf(bufTop," P1 >");
         delay(2);
       } else if(digitalRead(R_TRIG) == 0) { //new message
-        sprintf(bufTop," C5 >");
+        sprintf(bufTop," P2 >");
         delay(2);
       } else {
         sprintf(bufTop," C0 >");

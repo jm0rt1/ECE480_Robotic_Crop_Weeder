@@ -6,6 +6,9 @@
 #include <SabertoothSimplified.h>
 #include <Servo.h>
 
+#define SOLENOID 13
+#define IGNITER 12
+
 Servo servo_top; // top servo
 Servo servo_bottom; // bottom servo
 
@@ -22,7 +25,9 @@ char msg[40];    //Message
 char drive_[10]; // store drive value
 char steer[10]; // store steer value
 char buttonTop[10]; // store button value
+char propaneBuffer[10];
 byte topIndex; // index of button array
+byte propaneIndex; //index of propane array
 byte index;     //Index of array
 byte driveIndex; // index of drive array
 byte steerIndex; // index of steer array
@@ -50,6 +55,8 @@ void setup() {
   pinMode(stepPin,OUTPUT); 
   pinMode(dirPin,OUTPUT);
   pinMode(enPin,OUTPUT);
+  pinMode(SOLENOID, OUTPUT);
+  pinMode(IGNITER, OUTPUT);
   digitalWrite(enPin,LOW);
 }
 
@@ -105,10 +112,9 @@ void loop() {
           i++; //next character of message.
           current = msg[i]; // "D#### "
         }
-      }
+      
       // check if it is for steering
-      else if (current == 'S')
-      {
+      } else if (current == 'S') {
         i++;
         current = msg[i]; // get next character
         while (current != ' ')
@@ -120,10 +126,8 @@ void loop() {
           i++;
           current = msg[i];
         }
-      }
       // check if it is for camera
-      else if (current == 'C')
-      {
+      } else if (current == 'C') {
         i++;
         current = msg[i]; // get next character
         while (current != ' ')
@@ -134,6 +138,17 @@ void loop() {
           buttonTop[topIndex] = '\0';
           i++;
           current = msg[i];
+        }
+      } else if (current == 'P') { //decode propane message
+        i++;
+        current = msg[i]; // get next character;
+        while(current !=) {
+          // fill button character
+          propaneBuffer[propaneIndex] = current;
+          propaneIndex++;
+          propaneBuffer[propaneIndex] = '\0';
+          i++;
+          current = msg[i]
         }
       }
     }
@@ -179,6 +194,7 @@ void loop() {
    }
    
    int topValue = atoi(buttonTop); // convert button buffer to usable value
+
    
    if (topValue == 1)
    {
@@ -244,19 +260,33 @@ void loop() {
       servoBottomAngle = 74;
       servo_bottom.write(servoBottomAngle);
    }
-   prevButton = topValue;
-   
-   topIndex = 0;
-   driveIndex = 0;
-   steerIndex = 0;
-   buttonTop[topIndex] = '\0';
-   drive_[driveIndex] = '\0';
-   steer[steerIndex] = '\0';
-   index = 0;
-   msg[index] = '\0';
-   started = false;
-   ended = false;
-   delay(50);
+
+  int propaneValue = atoi(propaneBuffer)
+  if(propaneValue == 1) {
+    digitalWrite(SOLENOID, HIGH);
+    delay(50);
+    digitalWrite(SOLENOID, LOW);
+  } else if(propaneValue == 2) {
+    digitalWrite(IGNITER, HIGH);
+    delay(50);
+    digitalWrite(IGNITER, LOW);
+  }
+
+
+
+  prevButton = topValue;
+  
+  topIndex = 0;
+  driveIndex = 0;
+  steerIndex = 0;
+  propaneIndex = 0;
+  buttonTop[topIndex] = '\0';
+  drive_[driveIndex] = '\0';
+  steer[steerIndex] = '\0';
+  index = 0;
+  msg[index] = '\0';
+  started = false;
+  ended = false;
+  delay(50);
  }
 }
-//comment
