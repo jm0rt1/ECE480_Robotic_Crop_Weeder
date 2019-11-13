@@ -14,7 +14,7 @@ void loop() {
     }
     else {
       digitalWrite(SOLENOID, LOW);
-      delay(1000);
+      delay(1000); //hello
     }
 }
 
