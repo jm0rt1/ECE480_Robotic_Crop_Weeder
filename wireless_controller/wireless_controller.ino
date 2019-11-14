@@ -92,10 +92,10 @@ void loop() {
   } else if(control_mode == 1) {
 
       if(digitalRead(TOP_BUTTON) == 0) {//new message
-        sprintf(bufTop," P1 >",tempVal);
+        sprintf(bufTop," C2 >",tempVal);
         delay(2);
       } else if(digitalRead(R_BUTTON) == 0) { //new message
-        sprintf(bufTop," P2 >");
+        sprintf(bufTop," C1 >");
         delay(2);
       } else if(digitalRead(BOTTOM_BUTTON) == 0) { // new message
         sprintf(bufTop," C4 >");
