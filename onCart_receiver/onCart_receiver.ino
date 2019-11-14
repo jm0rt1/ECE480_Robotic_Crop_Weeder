@@ -6,8 +6,8 @@
 #include <SabertoothSimplified.h>
 #include <Servo.h>
 
-#define SOLENOID 13
-#define IGNITER 12
+#define SOLENOID 12
+#define IGNITER 13
 
 Servo servo_top; // top servo
 Servo servo_bottom; // bottom servo
@@ -58,6 +58,8 @@ void setup() {
   pinMode(SOLENOID, OUTPUT);
   pinMode(IGNITER, OUTPUT);
   digitalWrite(enPin,LOW);
+  digitalWrite(SOLENOID,HIGH);
+  digitalWrite(IGNITER,HIGH);
 }
 
 void loop() {
@@ -145,7 +147,7 @@ void loop() {
         i++;
         current = msg[i]; // get next character;
         while(current != ' ') {
-          // fill button character
+          // fill propane character buffer
           propaneBuffer[propaneIndex] = current;
           propaneIndex++;
           propaneBuffer[propaneIndex] = '\0';
@@ -264,15 +266,18 @@ void loop() {
    }
 
   int propaneValue = atoi(propaneBuffer);
+
   if(propaneValue == 1) {
-    digitalWrite(SOLENOID, HIGH);
-    delay(50);
     digitalWrite(SOLENOID, LOW);
-  } else if(propaneValue == 2) {
-    digitalWrite(IGNITER, HIGH);
     delay(50);
+  } else if(propaneValue == 2) {
     digitalWrite(IGNITER, LOW);
+    delay(50);
+  } else {
+    digitalWrite(IGNITER, HIGH);
+    digitalWrite(SOLENOID, HIGH); 
   }
+
 
 
 
