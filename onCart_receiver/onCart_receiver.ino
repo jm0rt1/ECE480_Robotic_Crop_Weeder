@@ -18,6 +18,12 @@ const int stepPin = 5;
 const int dirPin = 2;
 const int enPin = 8;
 
+//Might not need added just in case if removed, fix the codes with the values
+const int stepPin2 = 5;
+const int dirPin2 = 2;
+const int enPin2 = 8;
+//
+
 bool started= false;//True: Message is strated
 bool ended  = false;//True: Message is finished 
 char incomingByte ; //Variable to store the incoming byte
@@ -25,12 +31,14 @@ char msg[40];    //Message
 char drive_[10]; // store drive value
 char steer[10]; // store steer value
 char buttonTop[10]; // store button value
-char propaneBuffer[10];
-byte topIndex; // index of button array
+char propaneBuffer[10]; 
+char zrailBuffer[10];  // store z-rail button value
+byte topIndex; // 1index of button array
 byte propaneIndex; //index of propane array
 byte index;     //Index of array
 byte driveIndex; // index of drive array
 byte steerIndex; // index of steer array
+byte zrailIndex; // index of z-rail array 
 char tempChar;
 
 int prevDriveVal = 0;
@@ -58,6 +66,12 @@ void setup() {
   pinMode(SOLENOID, OUTPUT);
   pinMode(IGNITER, OUTPUT);
   digitalWrite(enPin,LOW);
+
+  // Might not need for the new stepper motor for z-rails
+  pinMode(stepPin2,OUTPUT); 
+  pinMode(dirPin2,OUTPUT);
+  pinMode(enPin2,OUTPUT);
+  digitalWrite(enPin2,LOW);
 }
 
 void loop() {
@@ -142,11 +156,22 @@ void loop() {
       } else if (current == 'P') { //decode propane message
         i++;
         current = msg[i]; // get next character;
-        while(current !=) {
+        while(current != ' ') {
           // fill button character
           propaneBuffer[propaneIndex] = current;
           propaneIndex++;
           propaneBuffer[propaneIndex] = '\0';
+          i++;
+          current = msg[i]
+        }
+      } else if (current == 'Z') { //decode z-rail message
+        i++;
+        current = msg[i]; // get next character;
+        while(current != ' ') {
+          // fill button character
+          zrailBuffer[zrailIndex] = current;
+          zrailIndex++;
+          zrailBuffer[zrailIndex] = '\0';
           i++;
           current = msg[i]
         }
@@ -194,7 +219,6 @@ void loop() {
    }
    
    int topValue = atoi(buttonTop); // convert button buffer to usable value
-    //goooo here
    
    if (topValue == 1)
    {
@@ -272,6 +296,31 @@ void loop() {
     digitalWrite(IGNITER, LOW);
   }
 
+  // Z-Rail Control of both motors from input from TOP & BOTTOM buttons
+  // NOTE:  If only one stepper motor code is needed, we need to get rid of dirPin2 (to dirPin) and stepPin2 (to stepPin)
+  int zrailValue = atoi(zrailBuffer)
+  // If value is 1, the TOP button is pushed so move the platform up
+  if(zrailValue == 1){
+    digitalWrite(dirPin2,HIGH);  // Move the rail up (might be flipped)
+    // WILL have to change the value of 800 lower to be able to make a fluent movement
+    for(int x = 0; x < 800; x++) {
+    digitalWrite(stepPin2,HIGH); 
+    delayMicroseconds(500); 
+    digitalWrite(stepPin2,LOW); 
+    delayMicroseconds(500); 
+    }       
+  } 
+  // If value is 2, the BOTTOM button is pushed so move the platform down
+  else if (zrailValue == 2){
+    digitalWrite(dirPin2,LOW);  // Move the rail down (might be flipped)
+    // WILL have to change the value of 800 lower to be able to make a fluent movement
+    for(int x = 0; x < 800; x++) {
+    digitalWrite(stepPin2,HIGH); 
+    delayMicroseconds(500); 
+    digitalWrite(stepPin2,LOW); 
+    delayMicroseconds(500); 
+    } 
+  }
 
 
   prevButton = topValue;
@@ -280,11 +329,14 @@ void loop() {
   driveIndex = 0;
   steerIndex = 0;
   propaneIndex = 0;
+  zrailIndex = 0;
   buttonTop[topIndex] = '\0';
   drive_[driveIndex] = '\0';
   steer[steerIndex] = '\0';
   index = 0;
   msg[index] = '\0';
+  // DO YOU NEED TO ADD propaneBuffer[propaneIndex] = '\0';???
+  zrailBuffer[zrailIndex] = '\0';
   started = false;
   ended = false;
   delay(50);
