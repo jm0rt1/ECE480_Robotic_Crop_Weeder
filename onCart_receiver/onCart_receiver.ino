@@ -71,9 +71,11 @@ void loop() {
       ended = false;
       index = 0;
       driveIndex = 0;
+      propaneIndex = 0;
       drive_[driveIndex] = '\0'; // throw away any incomplete packet
       steerIndex = 0;
       steer[steerIndex] = '\0';
+      propaneBuffer[propaneIndex] = '\0';
       msg[index] = '\0'; // Throw away any incomplete packet
     }
    //End the message when the '>' symbol is received
