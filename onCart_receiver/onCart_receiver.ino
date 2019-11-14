@@ -142,13 +142,13 @@ void loop() {
       } else if (current == 'P') { //decode propane message
         i++;
         current = msg[i]; // get next character;
-        while(current !=) {
+        while(current != ' ') {
           // fill button character
           propaneBuffer[propaneIndex] = current;
           propaneIndex++;
           propaneBuffer[propaneIndex] = '\0';
           i++;
-          current = msg[i]
+          current = msg[i];
         }
       }
     }
@@ -261,7 +261,7 @@ void loop() {
       servo_bottom.write(servoBottomAngle);
    }
 
-  int propaneValue = atoi(propaneBuffer)
+  int propaneValue = atoi(propaneBuffer);
   if(propaneValue == 1) {
     digitalWrite(SOLENOID, HIGH);
     delay(50);
