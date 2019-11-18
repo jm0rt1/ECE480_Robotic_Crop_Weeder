@@ -162,7 +162,7 @@ void loop() {
           propaneIndex++;
           propaneBuffer[propaneIndex] = '\0';
           i++;
-          current = msg[i]
+          current = msg[i];
         }
       } else if (current == 'Z') { //decode z-rail message
         i++;
@@ -173,7 +173,7 @@ void loop() {
           zrailIndex++;
           zrailBuffer[zrailIndex] = '\0';
           i++;
-          current = msg[i]
+          current = msg[i];
         }
       }
     }
@@ -285,7 +285,7 @@ void loop() {
       servo_bottom.write(servoBottomAngle);
    }
 
-  int propaneValue = atoi(propaneBuffer)
+  int propaneValue = atoi(propaneBuffer);
   if(propaneValue == 1) {
     digitalWrite(SOLENOID, HIGH);
     delay(50);
@@ -298,27 +298,28 @@ void loop() {
 
   // Z-Rail Control of both motors from input from TOP & BOTTOM buttons
   // NOTE:  If only one stepper motor code is needed, we need to get rid of dirPin2 (to dirPin) and stepPin2 (to stepPin)
-  int zrailValue = atoi(zrailBuffer)
+  int zrailValue = atoi(zrailBuffer);
   // If value is 1, the TOP button is pushed so move the platform up
   if(zrailValue == 1){
-    digitalWrite(dirPin2,HIGH);  // Move the rail up (might be flipped)
+    digitalWrite(dirPin2,LOW);  // Move the rail down 
     // WILL have to change the value of 800 lower to be able to make a fluent movement
-    for(int x = 0; x < 800; x++) {
+    //x = length of pulse signal
+    for(int x = 0; x < 40; x++) {
     digitalWrite(stepPin2,HIGH); 
-    delayMicroseconds(500); 
+    delayMicroseconds(250); 
     digitalWrite(stepPin2,LOW); 
-    delayMicroseconds(500); 
+    delayMicroseconds(250); 
     }       
   } 
   // If value is 2, the BOTTOM button is pushed so move the platform down
   else if (zrailValue == 2){
-    digitalWrite(dirPin2,LOW);  // Move the rail down (might be flipped)
+    digitalWrite(dirPin2,HIGH);  // Move the rail up 
     // WILL have to change the value of 800 lower to be able to make a fluent movement
-    for(int x = 0; x < 800; x++) {
+    for(int x = 0; x < 40; x++) {
     digitalWrite(stepPin2,HIGH); 
-    delayMicroseconds(500); 
+    delayMicroseconds(250); 
     digitalWrite(stepPin2,LOW); 
-    delayMicroseconds(500); 
+    delayMicroseconds(250); 
     } 
   }
 
