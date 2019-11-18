@@ -78,7 +78,7 @@ void loop() {
         delay(2);
       } else if(digitalRead(L_BUTTON) == 0) { //camera roation CCW
         sprintf(bufTop," C4 >");
-        delay(2);
+        delay(2); //change
       } else if(digitalRead(L_TRIG) == 0) { //sends camera to a home position
         sprintf(bufTop," C5 >");
         delay(2);
