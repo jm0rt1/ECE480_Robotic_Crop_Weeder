@@ -14,15 +14,16 @@ Servo servo_bottom; // bottom servo
 
 SabertoothSimplified ST;
 
+//Steering pins
 const int stepPin = 5;
 const int dirPin = 2;
 const int enPin = 8;
 
-//Might not need added just in case if removed, fix the codes with the values
-const int stepPin2 = 5;
-const int dirPin2 = 2;
-const int enPin2 = 8;
-//
+//Z axis pins
+const int stepPin2 = 6;
+const int dirPin2 = 4;
+const int enPin2 = 7;
+
 
 bool started= false;//True: Message is strated
 bool ended  = false;//True: Message is finished 
