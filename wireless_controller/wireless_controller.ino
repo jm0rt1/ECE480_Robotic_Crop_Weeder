@@ -103,10 +103,10 @@ void loop() {
       } else if(digitalRead(L_BUTTON) == 0) { // new message
         sprintf(bufTop," X >");
         delay(2);
-      } else if(digitalRead(L_TRIG) == 0) { //new message
+      } else if(digitalRead(L_TRIG) == 0) { //Propane
         sprintf(bufTop," P1 >");
         delay(2);
-      } else if(digitalRead(R_TRIG) == 0) { //new message
+      } else if(digitalRead(R_TRIG) == 0) { //Propane
         sprintf(bufTop," P2 >");
         delay(2);
       } else {
