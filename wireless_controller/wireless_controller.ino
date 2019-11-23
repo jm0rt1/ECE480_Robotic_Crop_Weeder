@@ -90,18 +90,18 @@ void loop() {
         delay(2);
       }
   } else if(control_mode == 1) {
-
+      //X == no action
       if(digitalRead(TOP_BUTTON) == 0) {//new message for the z-rails (move up)
         sprintf(bufTop," Z1 >");
         delay(2);
       } else if(digitalRead(R_BUTTON) == 0) { //new message
-        sprintf(bufTop," C1 >");
+        sprintf(bufTop," X >");
         delay(2);
       } else if(digitalRead(BOTTOM_BUTTON) == 0) { // new message for the z-rails (move down)
         sprintf(bufTop," Z2 >");
         delay(2);
       } else if(digitalRead(L_BUTTON) == 0) { // new message
-        sprintf(bufTop," C3 >");
+        sprintf(bufTop," X >");
         delay(2);
       } else if(digitalRead(L_TRIG) == 0) { //new message
         sprintf(bufTop," P1 >");
@@ -110,7 +110,7 @@ void loop() {
         sprintf(bufTop," P2 >");
         delay(2);
       } else {
-        sprintf(bufTop," C0 >");
+        sprintf(bufTop," X >");
         delay(2);
       }
   }
